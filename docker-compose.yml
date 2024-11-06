@@ -1,0 +1,8 @@
+services:
+  mysql-spring-cache-redis:
+    container_name: mysql-spring-cache-redis
+    image: mysql:latest
+    ports:
+      - 3360:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: abc123

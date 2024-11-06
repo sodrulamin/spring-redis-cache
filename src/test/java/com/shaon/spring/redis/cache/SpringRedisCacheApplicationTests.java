@@ -1,4 +1,4 @@
-package com.shaon.spring_redis_cache;
+package com.shaon.spring.redis.cache;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
