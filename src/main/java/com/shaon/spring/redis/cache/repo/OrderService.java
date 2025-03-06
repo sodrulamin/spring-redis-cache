@@ -1,16 +1,21 @@
 package com.shaon.spring.redis.cache.repo;
 
 import java.util.List;
+import java.util.Random;
 
 import com.shaon.spring.redis.cache.OrderNotFoundException;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 
 @Service
+@Slf4j
 public class OrderService {
 
 	@Autowired
@@ -39,4 +44,19 @@ public class OrderService {
 		return "Order deleted successfully!";
 	}
 
+	@Transactional
+	public Order failedTransaction(Order order) {
+		repository.save(order);
+
+		if(order.getQty() > 1000)
+			throw new RuntimeException("Test fail message");
+
+		if(order.getQty() < 100) {
+			log.error("Quantity can not be less than 100");
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+		}
+
+		return order;
+
+	}
 }
