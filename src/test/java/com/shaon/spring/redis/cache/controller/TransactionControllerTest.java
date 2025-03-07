@@ -3,6 +3,7 @@ package com.shaon.spring.redis.cache.controller;
 import com.google.gson.Gson;
 import com.shaon.spring.redis.cache.dao.Order;
 import com.shaon.spring.redis.cache.dao.OrderRepository;
+import com.shaon.spring.redis.cache.dto.OrderDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -55,14 +56,14 @@ class TransactionControllerTest {
             "Greater than 100, 130, 101, true"
     })
     void orderSaveTest(String details, int price, int quantity, boolean isSaved) throws Exception {
-        Order order = new Order();
+        OrderDTO dto = new OrderDTO();
         Gson gson = new Gson();
 
-        order.setDetails(details);
-        order.setPrice(price);
-        order.setQty(quantity);
+        dto.setDetails(details);
+        dto.setPrice(price);
+        dto.setQty(quantity);
 
-        String content = gson.toJson(order);
+        String content = gson.toJson(dto);
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/api/failed-transaction")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -73,9 +74,9 @@ class TransactionControllerTest {
 
         content = result.getResponse().getContentAsString();
         log.info("Response: {}", content);
-        order = gson.fromJson(content, Order.class);
+        dto = gson.fromJson(content, OrderDTO.class);
 
-        Optional<Order> optional = orderRepository.findById(order.getId());
+        Optional<Order> optional = orderRepository.findById(dto.getId());
 
         Assertions.assertEquals(isSaved, optional.isPresent());
     }

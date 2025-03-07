@@ -3,6 +3,7 @@ package com.shaon.spring.redis.cache.controller;
 import java.util.List;
 
 import com.shaon.spring.redis.cache.dao.Order;
+import com.shaon.spring.redis.cache.dto.OrderDTO;
 import com.shaon.spring.redis.cache.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,17 +22,17 @@ public class RedisController {
 	private OrderService orderService;
 
 	@PostMapping("/save")
-	public Order save(@RequestBody Order order) {
+	public OrderDTO save(@RequestBody OrderDTO order) {
 		return orderService.save(order);
 	}
 	
 	@GetMapping("/findAll")
-	public List<Order> findAll() {
+	public List<OrderDTO> findAll() {
 		return orderService.findAll();
 	}
 	
 	@GetMapping("/findById/{id}")
-	public Order findById(@PathVariable int id) {
+	public OrderDTO findById(@PathVariable int id) {
 		return orderService.findOrderById(id);
 	}
 

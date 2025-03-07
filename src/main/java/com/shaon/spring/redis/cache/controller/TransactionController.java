@@ -1,6 +1,7 @@
 package com.shaon.spring.redis.cache.controller;
 
 import com.shaon.spring.redis.cache.dao.Order;
+import com.shaon.spring.redis.cache.dto.OrderDTO;
 import com.shaon.spring.redis.cache.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ public class TransactionController {
 
 
     @PostMapping("/failed-transaction")
-    public Order failedTransaction(@RequestBody Order order) {
+    public OrderDTO failedTransaction(@RequestBody OrderDTO order) {
 
         try {
             order = orderService.failedTransaction(order);

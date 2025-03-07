@@ -5,7 +5,9 @@ import java.util.List;
 import com.shaon.spring.redis.cache.OrderNotFoundException;
 import com.shaon.spring.redis.cache.dao.Order;
 import com.shaon.spring.redis.cache.dao.OrderRepository;
+import com.shaon.spring.redis.cache.dto.OrderDTO;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -17,24 +19,28 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class OrderService {
 
-	@Autowired
-	private OrderRepository repository;
+	private final OrderRepository repository;
 
-	public Order save(Order order) {
-		repository.save(order);
-		return order;
+	private final OrderMapper mapper;
+
+
+	public OrderDTO save(OrderDTO dto) {
+		repository.save(mapper.toOrder(dto));
+		return dto;
 	}
 
 	@Cacheable(value = "order")
-	public List<Order> findAll() {
-		return repository.findAll();
+	public List<OrderDTO> findAll() {
+		return mapper.toOrderDTOS(repository.findAll());
 	}
 
 	@Cacheable(value = "order", key = "#id", condition="#id>=10")
-	public Order findOrderById(int id) {
-		return repository.findById(id).orElseThrow(() -> new OrderNotFoundException("Not found"));
+	public OrderDTO findOrderById(int id) {
+		return mapper.toOrderDTO(repository.findById(id).
+				orElseThrow(() -> new OrderNotFoundException("Not found")));
 	}
 
 	@Caching(
@@ -46,18 +52,22 @@ public class OrderService {
 	}
 
 	@Transactional
-	public Order failedTransaction(Order order) {
+	public OrderDTO failedTransaction(OrderDTO dto) {
+
+		Order order = mapper.toOrder(dto);
+
+
 		repository.save(order);
 
-		if(order.getQty() > 1000)
+		if(dto.getQty() > 1000)
 			throw new RuntimeException("Test fail message");
 
-		if(order.getQty() < 100) {
+		if(dto.getQty() < 100) {
 			log.error("Quantity can not be less than 100");
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 		}
 
-		return order;
+		return mapper.toOrderDTO(order);
 
 	}
 }
