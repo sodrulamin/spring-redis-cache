@@ -1,11 +1,10 @@
 package com.shaon.spring.redis.cache.dao;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +15,6 @@ import lombok.NoArgsConstructor;
 @Entity(name = "order_details")
 public class Order implements Serializable {
 
-	private static final long serialVersionUID = 214101981905645865L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -27,4 +24,7 @@ public class Order implements Serializable {
 	private int qty;
 
 	private long price;
+
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<OrderItem> items;
 }

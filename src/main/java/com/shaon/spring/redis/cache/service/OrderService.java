@@ -1,14 +1,18 @@
 package com.shaon.spring.redis.cache.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.shaon.spring.redis.cache.OrderNotFoundException;
 import com.shaon.spring.redis.cache.dao.Order;
+import com.shaon.spring.redis.cache.dao.OrderItem;
 import com.shaon.spring.redis.cache.dao.OrderRepository;
 import com.shaon.spring.redis.cache.dto.OrderDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -56,6 +60,20 @@ public class OrderService {
 
 		Order order = mapper.toOrder(dto);
 
+		Random random = new Random();
+
+		List<OrderItem> list = new ArrayList<>();
+
+		for(int i = 0; i < 3; i ++) {
+			OrderItem orderItem = new OrderItem();
+
+			orderItem.setOrder(order);
+			orderItem.setPrice(random.nextInt(100));
+
+			list.add(orderItem);
+		}
+
+		order.setItems(list);
 
 		repository.save(order);
 
