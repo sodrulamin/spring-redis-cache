@@ -1,7 +1,7 @@
 package com.shaon.spring.redis.cache.controller;
 
-import com.shaon.spring.redis.cache.repo.Order;
-import com.shaon.spring.redis.cache.repo.OrderService;
+import com.shaon.spring.redis.cache.dao.Order;
+import com.shaon.spring.redis.cache.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

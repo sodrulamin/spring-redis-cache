@@ -1,4 +1,4 @@
-package com.shaon.spring.redis.cache.repo;
+package com.shaon.spring.redis.cache.dao;
 
 import java.io.Serializable;
 

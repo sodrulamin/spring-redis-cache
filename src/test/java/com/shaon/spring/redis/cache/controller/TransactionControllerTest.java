@@ -1,8 +1,8 @@
 package com.shaon.spring.redis.cache.controller;
 
 import com.google.gson.Gson;
-import com.shaon.spring.redis.cache.repo.Order;
-import com.shaon.spring.redis.cache.repo.OrderRepository;
+import com.shaon.spring.redis.cache.dao.Order;
+import com.shaon.spring.redis.cache.dao.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

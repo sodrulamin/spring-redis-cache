@@ -2,8 +2,8 @@ package com.shaon.spring.redis.cache.controller;
 
 import java.util.List;
 
-import com.shaon.spring.redis.cache.repo.Order;
-import com.shaon.spring.redis.cache.repo.OrderService;
+import com.shaon.spring.redis.cache.dao.Order;
+import com.shaon.spring.redis.cache.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
